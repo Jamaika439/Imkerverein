@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bienen-page-container" style="max-width: 1000px; margin: 40px auto;">
+    
+    <div class="bienen-hero">
+        <span class="hero-badge">Admin-Bereich</span>
+        <h1>Posteingang</h1>
+        <div class="hero-line"></div>
+    </div>
+
+    <div class="bienen-story">
+        {% if not nachrichten %}
+            <div style="text-align: center; background: rgba(255, 255, 255, 0.95); border: var(--sharp-border); padding: 40px;">
+                <p style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic;">
+                    Das Postfach ist aktuell leer. Keine neuen Anfragen.
+                </p>
+            </div>
+        {% else %}
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                {% for msg in nachrichten %}
+                    <div style="background: rgba(255, 255, 255, 0.98); border: 1px solid rgba(44, 30, 18, 0.15); border-left: 5px solid var(--bee-black); border-radius: 0px; padding: 25px; box-shadow: 0 8px 25px rgba(44, 30, 18, 0.02); position: relative;">
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid rgba(44, 30, 18, 0.08); padding-bottom: 12px; margin-bottom: 15px;">
+                            <div>
+                                <h3 style="margin: 0 0 5px 0; font-size: 1.5rem; font-weight: 700;">{{ msg.name }}</h3>
+                                <a href="mailto:{{ msg.email }}" style="color: var(--honey-dark); text-decoration: none; font-size: 0.95rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
+                                    <span style="font-size: 0.85rem;">✉️</span> {{ msg.email }}
+                                </a>
+                            </div>
+                            <div style="text-align: right;">
+                                <span style="font-size: 0.85rem; color: #8C7A6B; font-weight: 600; background: #F5EFEB; padding: 4px 8px;">
+                                    {{ msg.created_at.strftime('%d.%m.%Y um %H:%M') }} Uhr
+                                </span>
+                            </div>
+                        </div>
+
+                        <div style="text-align: left; white-space: pre-line; color: var(--bee-text); font-size: 1.05rem; line-height: 1.6; margin-bottom: 15px;">
+                            {{ msg.nachricht }}
+                        </div>
+
+                        <div style="display: flex; justify-content: flex-end; gap: 15px; border-top: 1px solid rgba(44, 30, 18, 0.05); padding-top: 12px;">
+                            <a href="mailto:{{ msg.email }}?subject=Re: Anfrage Imkerverein" style="background: #2C1E12; color: #FFB300; border: 1px solid #FFB300; padding: 6px 15px; font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 0.95rem; text-transform: uppercase; text-decoration: none; letter-spacing: 0.5px; transition: all 0.2s;">
+                                Antworten
+                            </a>
+                        </div>
+<form action="{{ url_for('delete_nachricht', id=nachricht.id) }}" method="POST" onsubmit="return confirm('Möchten Sie diese Nachricht wirklich unwiderruflich löschen?');" style="margin-top: 15px; text-align: right;">
+    <button type="submit" style="background: #d9534f; color: white; border: none; padding: 6px 12px; font-family: sans-serif; font-size: 0.85rem; cursor: pointer; border-radius: 3px;">
+        🗑️ Nachricht löschen
+    </button>
+</form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

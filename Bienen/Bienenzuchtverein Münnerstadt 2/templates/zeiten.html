@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termine - Bienenzuchtverein Münnerstadt</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <h1>Öffnungszeiten & Termine</h1>
+
+    <nav class="waben-netz">
+        <a href="{{ url_for('index') }}" class="wabe">
+            <div class="wabe-inner"><div class="wabe-text">Startseite</div></div>
+        </a>
+        <a href="{{ url_for('galerie') }}" class="wabe">
+            <div class="wabe-inner"><div class="wabe-text">Galerie</div></div>
+        </a>
+        <a href="{{ url_for('verein') }}" class="wabe">
+            <div class="wabe-inner"><div class="wabe-text">Verein</div></div>
+        </a>
+        <a href="{{ url_for('caffee') }}" class="wabe">
+            <div class="wabe-inner"><div class="wabe-text">Bienen-<br>caffee</div></div>
+        </a>
+        <a href="{{ url_for('zeiten') }}" class="wabe">
+            <div class="wabe-inner"><div class="wabe-text">Termine</div></div>
+        </a>
+        <a href="{{ url_for('login') }}" class="wabe login-wabe">
+            <div class="wabe-inner"><div class="wabe-text">Login</div></div>
+        </a>
+    </nav>
+
+    <div class="content-bereich">
+        <h2>Unser Vereinskalender</h2>
+        <p>Verpasse kein Treffen, keinen Vortrag und keinen Schleudertermin mehr. Hier halten wir dich auf dem Laufenden.</p>
+        
+        <!-- Google Calendar Integration -->
+        <div class="iframe-container">
+            <iframe src="https://calendar.google.com/calendar/embed?src=DEIN_KALENDER_ID&ctz=Europe%2FBerlin" 
+                    style="border: 0" width="100%" height="500" frameborder="0" scrolling="no"></iframe>
+        </div>
+    </div>
+
+</body>
+</html>

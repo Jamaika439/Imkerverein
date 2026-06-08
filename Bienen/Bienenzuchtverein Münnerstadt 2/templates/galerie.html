@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="gallery-page-container" style="max-width: 800px; margin: 0 auto; font-family: 'Segoe UI', sans-serif; color: #4A3C31; padding: 20px;">
+
+    <h1 style="text-align: center; color: #2C1E12; font-size: 2.5rem; margin-bottom: 40px; font-weight: bold;">
+        📸 Impressionen & Fotoalben
+    </h1>
+
+    {% for block in bloecke %}
+    <div class="gallery-album-section" style="margin-bottom: 60px; background: #FFFDF9; padding: 30px; border-radius: 15px; border: 1px solid #E6D7C3; box-shadow: 0 4px 15px rgba(0,0,0,0.01);">
+        
+        <h2 style="color: #2C1E12; margin-top: 0; border-bottom: 2px solid #FFB300; padding-bottom: 8px; font-size: 1.8rem;">
+            📖 {{ block.name }}
+        </h2>
+        {% if block.beschreibung %}
+            <p style="font-style: italic; color: #776555; margin-top: -5px; margin-bottom: 25px;">{{ block.beschreibung }}</p>
+        {% endif %}
+
+        <div style="display: flex; flex-direction: column; gap: 40px;">
+            {% for bild in block.bilder %}
+            <div class="gallery-card" style="background: white; border-radius: 12px; border: 1px solid #F0E6D2; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
+                
+                <div class="magnifier-container" style="position: relative; width: 100%; height: 480px; overflow: hidden; cursor: crosshair; background: #F7F5F0;">
+                    <img src="{{ url_for('static', filename='uploads/' ~ bild.filename) }}" alt="Galeriebild" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    <div class="lens" style="position: absolute; width: 160px; height: 160px; border-radius: 50%; border: 3px solid #FFB300; box-shadow: 0 5px 20px rgba(0,0,0,0.3); display: none; pointer-events: none; background-repeat: no-repeat; background-size: calc(100% * 3) calc(100% * 3);"></div>
+                </div>
+                
+                <div style="padding: 20px; background: #FFFDF9; border-top: 1px solid #F0E6D2; text-align: center; font-style: italic; color: #5C4D41; font-size: 1.1rem;">
+                    {{ bild.caption }}
+                </div>
+                
+            </div>
+            {% else %}
+                <p style="color: #999; font-style: italic;">Dieses Album enthält noch keine Bilder.</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 40px; background: #FFF3CD; border-radius: 8px; color: #856404;">
+        ℹ️ Bisher wurden keine Alben angelegt. Gehe ins Admin-Dashboard, um Alben zu erschaffen!
+    </div>
+    {% endfor %}
+
+</div>
+
+<script>
+document.querySelectorAll('.magnifier-container').forEach(container => {
+    const img = container.querySelector('img');
+    const lens = container.querySelector('.lens');
+
+    container.addEventListener('mousemove', (e) => {
+        lens.style.display = 'block';
+        
+        const rect = container.getBoundingClientRect();
+        let x = e.clientX - rect.left;
+        let y = e.clientY - rect.top;
+        
+        let lensX = x - (lens.offsetWidth / 2);
+        let lensY = y - (lens.offsetHeight / 2);
+        
+        lens.style.left = lensX + 'px';
+        lens.style.top = lensY + 'px';
+        
+        lens.style.backgroundImage = `url('${img.src}')`;
+        
+        let fx = (x / container.offsetWidth) * 100;
+        let fy = (y / container.offsetHeight) * 100;
+        
+        lens.style.backgroundPosition = `${fx}% ${fy}%`;
+    });
+
+    container.addEventListener('mouseleave', () => {
+        lens.style.display = 'none';
+    });
+});
+</script>
+{% endblock %}

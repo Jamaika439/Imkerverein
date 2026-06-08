@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bienen-page-container">
+    
+    <div class="bienen-hero">
+        <span class="hero-badge">Kontakt</span>
+        <h1>Schreiben Sie uns</h1>
+        <div class="hero-line"></div>
+    </div>
+
+    <div class="bienen-story">
+        <p style="text-align: center; margin-bottom: 40px;">
+            Haben Sie Fragen zu unserem Imkerverein, den Bienenvölkern oder unserem Bienen-Café? 
+            Nutzen Sie einfach das Formular – wir melden uns zeitnah bei Ihnen.
+        </p>
+
+        {% if erfolg %}
+            <div style="background: rgba(255, 253, 242, 0.9); border: 2px solid var(--honey-gold); padding: 25px; margin-bottom: 30px; text-align: center;">
+                <strong style="color: #2C1E12; font-size: 1.3rem; display: block; margin-bottom: 5px;">📍 Nachricht übermittelt!</strong>
+                Vielen Dank. Wir haben Ihre Anfrage erhalten und werden sie so schnell wie möglich bearbeiten.
+            </div>
+        {% endif %}
+
+        <form action="{{ url_for('kontakt_senden') }}" method="POST" style="background: var(--bg-card); border: var(--sharp-border); border-top: 4px solid var(--bee-black); padding: 35px; box-shadow: 0 10px 30px rgba(44, 30, 18, 0.04);">
+            
+            <div style="margin-bottom: 20px;">
+                <label for="name" style="display: block; font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.2rem; color: var(--bee-black); margin-bottom: 5px;">Ihr Name</label>
+                <input type="text" id="name" name="name" required style="width: 100%; padding: 12px; border: 1px solid rgba(44, 30, 18, 0.2); border-radius: 0px; font-family: inherit; box-sizing: border-box; background: #FFFDF8;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label for="email" style="display: block; font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.2rem; color: var(--bee-black); margin-bottom: 5px;">Ihre E-Mail-Adresse</label>
+                <input type="email" id="email" name="email" required style="width: 100%; padding: 12px; border: 1px solid rgba(44, 30, 18, 0.2); border-radius: 0px; font-family: inherit; box-sizing: border-box; background: #FFFDF8;">
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label for="message" style="display: block; font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.2rem; color: var(--bee-black); margin-bottom: 5px;">Ihre Nachricht</label>
+                <textarea id="message" name="message" rows="6" required style="width: 100%; padding: 12px; border: 1px solid rgba(44, 30, 18, 0.2); border-radius: 0px; font-family: inherit; box-sizing: border-box; background: #FFFDF8; resize: vertical;"></textarea>
+            </div>
+
+            <div style="margin-bottom: 25px; display: flex; align-items: flex-start;">
+                <input type="checkbox" id="dsgvo" name="dsgvo" required style="margin-top: 4px; margin-right: 10px; cursor: pointer;">
+                <label for="dsgvo" style="font-size: 0.9rem; color: var(--bee-text); line-height: 1.4; cursor: pointer;">
+                    Ich stimme zu, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden. 
+                    Weitere Informationen finden Sie in der <a href="{{ url_for('datenschutz') }}" target="_blank" style="color: var(--honey-dark); font-weight: bold; text-decoration: none;">Datenschutzerklärung</a>.
+                </label>
+            </div>
+
+            <button type="submit" style="background: var(--bee-black); color: var(--honey-gold); border: 1px solid var(--honey-gold); padding: 12px 35px; font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s;">
+                Absenden
+            </button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

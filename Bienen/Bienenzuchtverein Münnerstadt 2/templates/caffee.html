@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="cafe-page-container" style="max-width: 1000px; margin: 0 auto; font-family: 'Segoe UI', sans-serif; color: #4A3C31; padding: 20px;">
+
+    <!-- 1. Mittige Überschrift ganz oben -->
+    <h1 style="text-align: center; color: #2C1E12; font-size: 2.5rem; margin-bottom: 25px; font-weight: bold;">
+        ☕ Bienen-Café
+    </h1>
+
+    <!-- 2. Großes breites Bild (Banner) -->
+    <div class="cafe-banner-box" style="width: 100%; height: 350px; overflow: hidden; border-radius: 15px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); margin-bottom: 30px; background: #E6D7C3;">
+        {% if c.titel and '.' in c.titel %}
+            <img src="{{ url_for('static', filename='uploads/' ~ c.titel) }}" alt="Bienen-Café Banner" style="width: 100%; height: 100%; object-fit: cover;">
+        {% else %}
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #8A7665; font-style: italic;">
+                ☕ Bitte lade im Adminbereich ein Banner für das Café hoch!
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- 3. Textblock 1 (Über den Öffnungszeiten) -->
+    <div class="cafe-intro-text" style="font-size: 1.2rem; line-height: 1.8; text-align: center; margin-bottom: 30px; white-space: pre-line; background: white; padding: 20px; border-radius: 10px;">
+        {{ c.text or 'Willkommen im Bienen-Café!' }}
+    </div>
+
+    <!-- 4. Status-Zeile (Keon Button-Look, sauber geschlossen) -->
+    {% set zeiten = (c_unten.titel or "nein|14:00|18:00").split('|') %}
+    <div class="cafe-status-bar" style="text-align: center; margin-bottom: 40px; padding: 15px 0; border-top: 1px solid #E0D6C3; border-bottom: 1px solid #E0D6C3;">
+        {% if zeiten[0] == 'ja' %}
+            <span style="font-size: 1.25rem; color: #2E5B16; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; justify-content: center; width: 100%;">
+                <span style="display: inline-block; width: 10px; height: 10px; background: #70AD47; border-radius: 50%;"></span>
+                <strong>Heute geöffnet von {{ zeiten[1] }} bis {{ zeiten[2] }} Uhr</strong>
+            </span>
+        {% else %}
+            <span style="font-size: 1.25rem; color: #843C0C; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; justify-content: center; width: 100%;">
+                <span style="display: inline-block; width: 10px; height: 10px; background: #C65911; border-radius: 50%;"></span>
+                Aktueller Status: <strong>Heute geschlossen</strong>
+            </span>
+        {% endif %}
+    </div>
+
+    <!-- 5. Der Google Kalender -->
+    {% if termine and termine.text %}
+    <div class="cafe-calendar-wrapper" style="margin-bottom: 40px; background: white; padding: 15px; border-radius: 12px; border: 1px solid #F0E6D2; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
+        <h4 style="margin-top: 0; color: #2C1E12; font-size: 1.2rem; margin-bottom: 15px;">📅 Unser aktueller Kalender & Öffnungszeiten:</h4>
+        <iframe src="https://outlook.office365.com/owa/calendar/ee07e7e6ef5c4c4abdde3f030cbbbd42@Imkervereinmuennerstadt.onmicrosoft.com/861858045ed24bb08f655f42093cbd755840352322019263249/calendar.html" style="border: 0; width: 100%; height: 500px;" frameborder="0" scrolling="no"></iframe>
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 20px; background: #FFF3CD; border-radius: 8px; margin-bottom: 40px;">
+        ℹ️ Trage im Admin-Dashboard ganz unten deine Google Kalender-ID ein, um den Kalender hier zu aktivieren!
+    </div>
+    {% endif %}
+
+    <!-- 6. Textblock 2 (Weitere Infos ganz unten) -->
+    {% if c_unten.text %}
+    <div class="cafe-details-box" style="background: #FFFDF9; border-left: 5px solid #FFB300; padding: 25px; border-radius: 4px 12px 12px 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.01); line-height: 1.8; font-size: 1.1rem; white-space: pre-line;">
+        {{ c_unten.text }}
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

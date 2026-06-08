@@ -1,0 +1,354 @@
+/* ==========================================================================
+   1. GLOBAL & ASYMMETRISCHES LAYOUT (ENT-AI-IFIZIERT)
+   ========================================================================== */
+body {
+    background-image: url('/static/images/landschaft-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    
+    /* NEU: Cleane, warme Textschrift */
+    font-family: 'Open Sans', sans-serif; 
+    
+    margin: 0;
+    padding: 20px;
+    position: relative;
+    color: #36291E;
+}
+
+ h1, h2, h3, h4, .wabe-text {
+    /* NEU: Edle, traditionelle Serifenschrift für alle Überschriften */
+    font-family: 'Merriweather', serif;
+}
+
+/* Der Weichzeichner-Trick für das Hintergrundbild (Textur statt flacher Farbe) */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: inherit;
+    filter: blur(5px) brightness(92%); /* Von 12px auf 5px reduziert */
+    z-index: -2;
+}
+
+/* Edles, semitransparentes Schutz-Overlay für perfekte Lesbarkeit */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(254, 252, 248, 0.82); /* Von 0.88 auf 0.82 reduziert */
+    z-index: -1;
+}
+
+.page-header {
+    text-align: left;
+    margin-left: 5%;
+    margin-bottom: 60px;
+    border-left: 3px solid #2C1E12; /* Kantiger Design-Akzent statt runder Badges */
+    padding-left: 20px;
+}
+
+h1 { 
+    color: #2C1E12; 
+    font-size: 2.8rem; 
+    margin: 0; 
+    font-weight: 900; /* Schön wuchtig */
+    letter-spacing: -0.5px;
+}
+
+.main-layout {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 5%;
+}
+
+/* ==========================================================================
+   2. DAS WABEN-NETZ (UNVERÄNDERT - DEIN MEISTERSTÜCK)
+   ========================================================================== */
+.waben-netz {
+    display: inline-block;
+    filter: drop-shadow(20px 25px 15px rgba(44, 30, 18, 0.15));
+}
+
+.reihe {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: -40px;
+}
+
+.reihe-kurz {
+    margin-left: 66px;
+}
+
+.wabe {
+    position: relative;
+    width: 128px;  
+    height: 148px; 
+    margin-right: 4px;
+    text-decoration: none;
+    display: block;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1;
+}
+
+.wabe::before {
+    content: "";
+    position: absolute;
+    top: 12px;  
+    left: 12px;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #54320C 0%, #2A1806 100%);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    z-index: -1;
+}
+
+.wabe-front {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(145deg, #FFC86B 0%, #B37427 100%);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    z-index: 2;
+}
+
+.honig-kern {
+    position: absolute;
+    top: 6px; left: 6px; right: 6px; bottom: 6px; 
+    background: radial-gradient(circle at 30% 30%, #FFF8E1 0%, #FFB300 70%, #CC7A00 100%);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        inset 5px 6px 12px rgba(0, 0, 0, 0.4),
+        inset -2px -2px 8px rgba(255, 255, 255, 0.3);
+}
+
+.wabe-text {
+    font-family: 'Cormorant Garamond', serif;
+    color: #2C1E12;
+    font-weight: 700;        /* Erhöht auf 700 für mehr Masse */
+    font-size: 1.15rem;      /* Spürbar größer (vorher 0.85rem), da Garamond kleiner wirkt */
+    line-height: 1.1;        /* Hält mehrzeiligen Text kompakt zusammen */
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.5px;   /* Gibt den edlen Buchstaben minimal Platz zum Atmen */
+}
+
+.wabe-biene::before { background: #3D2309; }
+.wabe-biene .honig-kern { background: #F3E5AB; display: flex; align-items: center; justify-content: center; }
+
+.koenigin-img {
+    position: absolute;
+    top: -122px; 
+    left: -180px; 
+    width: 400px; 
+    z-index: 999;
+    pointer-events: none; 
+    filter: drop-shadow(12px 16px 8px rgba(0,0,0,0.35));
+}
+
+.wabe:hover {
+    transform: translate(12px, 12px); 
+}
+
+.wabe-leer::before { background: #3D2309; }
+.wabe-leer .honig-kern { background: #F3E5AB; box-shadow: none; }
+
+
+/* ==========================================================================
+   3. MANAGEMENT & CONTROLS (KANTIG & EDEL)
+   ========================================================================== */
+.admin-bar {
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    background: #2C1E12;
+    color: #FFB300;
+    padding: 12px 20px;
+    z-index: 10000;
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 4px 0px #B37427; /* Fester, scharfer Kontraststreifen statt diffusem Schatten */
+    box-sizing: border-box;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.admin-bar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 15px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.admin-bar a:hover {
+    border-color: #FFB300;
+}
+
+
+/* ==========================================================================
+   4. PREMIUM CONTENT LAYOUT (KANTEN STATT AI-RUNDUNGEN)
+   ========================================================================== */
+:root {
+    --honey-gold: #FFB300;
+    --honey-light: #FFFDF2;
+    --honey-dark: #B37427;
+    --bee-black: #2C1E12;
+    --bee-text: #36291E;
+    --bg-card: rgba(255, 255, 255, 0.95); /* Leicht durchscheinend auf dem neuen Background */
+    --sharp-border: 1px solid rgba(44, 30, 18, 0.15); /* Dünne architektonische Linie */
+}
+
+.bienen-page-container {
+    max-width: 850px;
+    margin: 40px auto;
+}
+
+/* Hero Bereich ohne verspielte Badges */
+.bienen-hero {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 10px 0;
+}
+
+/* Der ehemals runde AI-Badge ist jetzt ein klares, traditionelles Siegel-Label */
+.hero-badge {
+    display: inline-block;
+    background: var(--bee-black);
+    color: var(--honey-gold);
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 4px 12px;
+    border-radius: 0px; /* KOMPLETT KANTIG */
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 20px;
+    border: 1px solid var(--honey-gold);
+}
+
+.hero-line {
+    width: 60px;
+    height: 2px; /* Dünner, eleganter */
+    background: var(--honey-dark);
+    margin: 15px auto 0 auto;
+    border-radius: 0px;
+}
+
+/* Typografie-Schärfung des Haupttextes */
+.bienen-story {
+    color: var(--bee-text);
+    font-size: 1.1rem;
+    line-height: 1.85;
+    white-space: pre-line;
+}
+
+.bienen-story p {
+    margin-bottom: 30px;
+    text-align: justify;
+}
+
+/* Zwischenüberschriften */
+.bienen-story h3 {
+    font-size: 1.7rem;
+    color: var(--bee-black);
+    margin: 50px 0 20px 0;
+    position: relative;
+    padding-left: 0;
+    border-left: none;
+    font-weight: 800;
+}
+
+/* Kleine, feine Unterstreichung unter Überschriften statt fetter Balken links */
+.bienen-story h3::after {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 3px;
+    background: var(--honey-gold);
+    margin-top: 8px;
+}
+
+/* Das Grid-System der Content-Cards */
+.bienen-story ul {
+    list-style: none;
+    padding: 0;
+    margin: 35px 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+/* Aus der runden AI-Card wird ein edles Imker-Segment */
+.bienen-story li {
+    background: var(--bg-card);
+    border: var(--sharp-border);
+    border-top: 4px solid var(--bee-black); /* Akzent nach oben gewandert für stabilen Look */
+    border-left: none;
+    padding: 25px;
+    border-radius: 0px; /* HIER FLIEGT DIE AI-RUNDUNG RAUS */
+    box-shadow: 0 10px 30px rgba(44, 30, 18, 0.04); /* Subtiler, erdiger Schatten */
+    transition: transform 0.2s ease, border-top-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bienen-story li:hover {
+    transform: translateY(-2px); /* Minimaler Hub */
+    border-top-color: var(--honey-gold);
+    box-shadow: 0 15px 35px rgba(179, 116, 39, 0.1);
+}
+
+.bienen-story li strong {
+    color: var(--bee-black);
+    font-size: 1.25rem;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+/* Wichtige Infoboxen (Das einstige dashed-Kästchen) */
+.bienen-story > strong {
+    display: block;
+    background: rgba(255, 253, 242, 0.9);
+    border: 1px solid var(--honey-dark); /* Durchgezogen wirkt hochwertiger als dashed */
+    padding: 25px;
+    border-radius: 0px; /* KANTIG */
+    color: var(--bee-black);
+    font-weight: 600;
+    margin: 40px 0;
+    position: relative;
+}
+
+.verein-tab-btn {
+    background: transparent;
+    border: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2C1E12;
+    padding: 10px 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+.verein-tab-btn:hover {
+    color: #B37427;
+}
+
+.verein-tab-btn.active-tab {
+    background: #2C1E12;
+    color: #FFB300;
+    border: 1px solid #FFB300;
+}
+
+.verein-tab-btn {
+    flex: 1;                 /* Jeder Button bekommt gleich viel Platz */
+    text-align: center;      /* Text zentrieren */
+    white-space: nowrap;     /* Kein Textumbruch im Button */
+    padding: 10px 5px;       /* Leicht reduziertes Padding an den Seiten */
+    font-size: 1.1rem;       /* Minimal kleinere Schrift, damit es perfekt passt */
+}

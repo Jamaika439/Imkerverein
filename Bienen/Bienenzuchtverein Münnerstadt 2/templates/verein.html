@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}Unser Verein - Imkerverein{% endblock %}
+
+{% block content %}
+<div class="bienen-page-container">
+    
+    <!-- Sub-Navigation ohne Scrollleiste, direkt verteilt -->
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 5px; margin-bottom: 50px; border-bottom: 2px solid #2C1E12; padding-bottom: 10px; width: 100%;">
+        <button onclick="switchTab('entstehung')" class="verein-tab-btn active-tab">Entstehung</button>
+        <button onclick="switchTab('vorstand')" class="verein-tab-btn">Vorstandschaft</button>
+        <button onclick="switchTab('bildung')" class="verein-tab-btn">Bildungsangebot</button>
+        <button onclick="switchTab('kontakt-shortcut')" class="verein-tab-btn">Direkter Kontakt</button>
+    </div>
+
+    <!-- ==================== TAB 1: ENTSTEHUNG ==================== -->
+    <div id="tab-entstehung" class="verein-tab-content">
+        <div class="bienen-hero">
+            <span class="hero-badge">Unsere Geschichte</span>
+            <h1>{{ c.titel if c and c.titel else 'Entstehung des Vereins' }}</h1>
+            <div class="hero-line"></div>
+        </div>
+        <div class="bienen-story" style="text-align: left; background: rgba(255,255,255,0.4); padding: 30px; border: 1px solid rgba(44, 30, 18, 0.15);">
+            {% if c and c.text %}
+                <p style="white-space: pre-line;">{{ c.text }}</p>
+            {% else %}
+                <p style="font-style: italic; text-align: center;">Hier steht in Kürze die Chronik und Entstehungsgeschichte unseres Imkervereins.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ==================== TAB 2: VORSTANDSCHAFT (Dynamisch!) ==================== -->
+  <!-- ==================== TAB 2: VORSTANDSCHAFT ==================== -->
+    <div id="tab-vorstand" class="verein-tab-content" style="display: none;">
+        <div class="bienen-hero">
+            <span class="hero-badge">Organisation</span>
+            <h1>{{ verein_vorstand.titel if verein_vorstand and verein_vorstand.titel else 'Die Vorstandschaft' }}</h1>
+            <div class="hero-line"></div>
+        </div>
+        
+        <!-- Das Grid für die Vorstandskarten -->
+        <div class="bienen-story" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; justify-content: center;">
+            {% if vorstandschaft %}
+                {% for mitglied in vorstandschaft %}
+                    {% set info_teile = mitglied.caption.split('|') %}
+                    
+                    <div style="background: rgba(255, 255, 255, 0.95); border: var(--sharp-border); border-top: 4px solid var(--bee-black); padding: 40px 30px; text-align: center; box-sizing: border-box; display: flex; flex-direction: column; align-items: center;">
+                        
+                        <!-- 1. OBEN: Die Rolle (Als span deklariert, um globale h3-Styles zu blockieren) -->
+                        <span style="display: block; margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--bee-black); border: none !important; background: transparent !important;">
+                            {{ info_teile[0].strip() if info_teile|length > 0 else 'Vorstandsmitglied' }}
+                        </span>
+                        
+                        <!-- Unser gewollter, eleganter Trennstrich -->
+                        <div style="width: 50%; height: 2px; background: var(--honey-dark); margin: 15px auto 25px auto; opacity: 0.6;"></div>
+
+                        <!-- 2. MITTE: Das große Vorstandsfoto -->
+                        {% if mitglied.filename %}
+                        <!-- REPARIERT: Hintergrund auf transparent gesetzt und line-height: 0 verhindert jegliche Geister-Kästen -->
+                        <div style="width: 100%; max-width: 280px; height: 350px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); background: transparent; line-height: 0; overflow: hidden;">
+                            <img src="{{ url_for('static', filename='uploads/' ~ mitglied.filename) }}" alt="Vorstand" 
+                                 style="width: 100%; height: 100%; object-fit: cover; display: block; border: var(--sharp-border); box-sizing: border-box; margin: 0; padding: 0;">
+                        </div>
+                        {% else %}
+                        <div style="width: 100%; max-width: 280px; height: 350px; margin-bottom: 20px; background: #f9f6f0; border: var(--sharp-border); display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 4rem;">👑</span>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- 3. UNTEN: Name -->
+                        <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: var(--honey-dark); margin: 5px 0 10px 0;">
+                            {{ info_teile[1].strip() if info_teile|length > 1 else 'Name nicht eingetragen' }}
+                        </p>
+
+                        <!-- 4. GANZ UNTEN: Optionale Zusatzinfo -->
+                        {% if info_teile|length > 2 and info_teile[2].strip() != "" %}
+                        <p style="font-size: 0.95rem; line-height: 1.6; color: #555; margin: 5px 0 0 0; font-style: italic; max-width: 280px;">
+                            {{ info_teile[2].strip() }}
+                        </p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div style="grid-column: 1 / -1; text-align: center; padding: 20px; background: rgba(255,255,255,0.5); border: var(--sharp-border);">
+                    <p style="font-style: italic; margin: 0;">Aktuell sind keine Vorstandsmitglieder eingetragen.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ==================== TAB 3: BILDUNGSANGEBOT ==================== -->
+    <div id="tab-bildung" class="verein-tab-content" style="display: none;">
+        <div class="bienen-hero">
+            <span class="hero-badge">Wissen & Natur</span>
+<h1>{{ verein_bildung.titel if verein_bildung and verein_bildung.titel else 'Unser Bildungsangebot' }}</h1>            <div class="hero-line"></div>
+        </div>
+        <div class="bienen-story" style="background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(44, 30, 18, 0.15); padding: 40px; text-align: left;">
+            {% if verein_bildung and verein_bildung.text %}
+                <p style="white-space: pre-line;">{{ verein_bildung.text }}</p>
+            {% else %}
+                <p style="font-style: italic; text-align: center;">Hier stehen bald unsere aktuellen Seminar-Termine.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ==================== TAB 4: KONTAKT SHORTCUT ==================== -->
+    <div id="tab-kontakt-shortcut" class="verein-tab-content" style="display: none;">
+        <div class="bienen-hero">
+            <span class="hero-badge">Fragen an den Verein?</span>
+            <h1>Direkter Kontakt</h1>
+            <div class="hero-line"></div>
+        </div>
+        <div style="text-align: center; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(44, 30, 18, 0.15); padding: 40px;">
+            <p style="font-size: 1.2rem; margin-bottom: 30px;">Möchten Sie Mitglied werden, haben Fragen zur Vorstandschaft oder interessieren sich für unser Bildungsangebot?</p>
+            <a href="{{ url_for('kontakt') }}" style="display: inline-block; background: #2C1E12; color: #FFB300; border: 1px solid #FFB300; padding: 14px 40px; font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.2rem; text-transform: uppercase; text-decoration: none; letter-spacing: 1px;">Zum Kontaktformular wechseln</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function switchTab(tabName) {
+    const contents = document.querySelectorAll('.verein-tab-content');
+    contents.forEach(content => content.style.display = 'none');
+    
+    const buttons = document.querySelectorAll('.verein-tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active-tab'));
+    
+    document.getElementById('tab-' + tabName).style.display = 'block';
+    event.currentTarget.classList.add('active-tab');
+}
+</script>
+{% endblock %}

@@ -1,0 +1,440 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 40px auto; padding: 20px; font-family: 'Segoe UI', sans-serif; background: #FDFBF7; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #2C1E12; padding-bottom: 15px; margin-bottom: 30px;">
+        <h2 style="color: #2C1E12; margin: 0;">🛠️ Imkerverein Admin-Dashboard</h2>
+        <a href="/logout" style="background: #CC0000; color: white; padding: 8px 15px; text-decoration: none; font-weight: bold; border-radius: 4px;">Abmelden</a>
+    </div>
+
+    <div style="margin-bottom: 40px; background: white; padding: 20px; border-radius: 10px; border: 1px solid #E6D7C3;">
+    <h3 style="color: #B37427; margin-top: 0;">🏡 Startseite Grid-Layout bearbeiten</h3>
+    
+    {% if home.img1 %}<form id="delete_img1_form" action="{{ url_for('delete_home_image', slot='img1') }}" method="POST"></form>{% endif %}
+    {% if home.img2 %}<form id="delete_img2_form" action="{{ url_for('delete_home_image', slot='img2') }}" method="POST"></form>{% endif %}
+    {% if home.img3 %}<form id="delete_img3_form" action="{{ url_for('delete_home_image', slot='img3') }}" method="POST"></form>{% endif %}
+
+    <form action="{{ url_for('update_home') }}" method="POST" enctype="multipart/form-data">
+        <label style="display:block; margin-bottom: 5px; font-weight: bold;">Haupt-Überschrift (oben):</label>
+        <input type="text" name="titel_oben" value="{{ home.titel_oben }}" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #CCC; border-radius: 4px;">
+
+        <label style="display:block; margin-bottom: 5px; font-weight: bold;">Begrüßungstext (oben):</label>
+        <textarea name="text_oben" rows="4" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #CCC; border-radius: 4px;">{{ home.text_oben }}</textarea>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 15px; background: #FAF8F5; padding: 15px; border-radius: 6px;">
+            
+            <div style="background: white; padding: 10px; border: 1px solid #E6D7C3; border-radius: 4px;">
+                <label style="font-weight: bold; display:block; margin-bottom:5px;">Bild Slot 1:</label>
+                {% if home.img1 %}
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; background: #FAF8F5; padding: 5px; border: 1px solid #ddd;">
+                        <img src="{{ url_for('static', filename='uploads/' ~ home.img1) }}" style="height: 50px; max-width: 80px; object-fit: cover; border: 1px solid #ccc;">
+                        <button type="submit" form="delete_img1_form" onclick="return confirm('Bild 1 wirklich löschen?')" style="background: #d9534f; color: white; border: none; padding: 5px 8px; font-size: 0.8rem; cursor: pointer; border-radius: 3px; font-weight: bold;">🗑️ Löschen</button>
+                    </div>
+                {% endif %}
+                <input type="file" name="img1" style="width: 100%;">
+            </div>
+
+            <div style="background: white; padding: 10px; border: 1px solid #E6D7C3; border-radius: 4px;">
+                <label style="font-weight: bold; display:block; margin-bottom:5px;">Bild Slot 2:</label>
+                {% if home.img2 %}
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; background: #FAF8F5; padding: 5px; border: 1px solid #ddd;">
+                        <img src="{{ url_for('static', filename='uploads/' ~ home.img2) }}" style="height: 50px; max-width: 80px; object-fit: cover; border: 1px solid #ccc;">
+                        <button type="submit" form="delete_img2_form" onclick="return confirm('Bild 2 wirklich löschen?')" style="background: #d9534f; color: white; border: none; padding: 5px 8px; font-size: 0.8rem; cursor: pointer; border-radius: 3px; font-weight: bold;">🗑️ Löschen</button>
+                    </div>
+                {% endif %}
+                <input type="file" name="img2" style="width: 100%;">
+            </div>
+
+            <div style="background: white; padding: 10px; border: 1px solid #E6D7C3; border-radius: 4px;">
+                <label style="font-weight: bold; display:block; margin-bottom:5px;">Bild Slot 3:</label>
+                {% if home.img3 %}
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; background: #FAF8F5; padding: 5px; border: 1px solid #ddd;">
+                        <img src="{{ url_for('static', filename='uploads/' ~ home.img3) }}" style="height: 50px; max-width: 80px; object-fit: cover; border: 1px solid #ccc;">
+                        <button type="submit" form="delete_img3_form" onclick="return confirm('Bild 3 wirklich löschen?')" style="background: #d9534f; color: white; border: none; padding: 5px 8px; font-size: 0.8rem; cursor: pointer; border-radius: 3px; font-weight: bold;">🗑️ Löschen</button>
+                    </div>
+                {% endif %}
+                <input type="file" name="img3" style="width: 100%;">
+            </div>
+
+        </div>
+
+        <label style="display:block; margin-bottom: 5px; font-weight: bold;">Abschließender Text (ganz unten):</label>
+        <textarea name="text_unten" rows="4" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #CCC; border-radius: 4px;">{{ home.text_unten }}</textarea>
+
+        <button type="submit" style="background: #2C1E12; color: #FFB300; border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 4px;">Startseite aktualisieren</button>
+    </form>
+</div>
+    
+   <div style="margin-bottom: 40px; background: white; padding: 20px; border-radius: 10px; border: 1px solid #E6D7C3;">
+        <h3 style="color: #B37427; margin-top: 0;">📜 Verein: 1. Reiter (Entstehung)</h3>
+        <form action="{{ url_for('save_content', seite='verein') }}" method="POST">
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">Hauptüberschrift (H1):</label>
+                <input type="text" name="titel" value="{{ verein.titel if verein and verein.titel else 'Entstehung des Vereins' }}" style="width: 100%; padding: 8px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">Inhaltstext für Entstehung:</label>
+                <textarea name="text" rows="8" style="width: 100%; font-family: monospace; padding: 8px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">{{ verein.text if verein else '' }}</textarea>
+            </div>
+            
+            <button type="submit" style="background: #2C1E12; color: #FFB300; border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 4px;">Speichern</button>
+        </form>
+    </div>
+
+    <div style="margin-bottom: 40px; background: white; padding: 20px; border-radius: 10px; border: 1px solid #E6D7C3;">
+        <h3 style="color: #B37427; margin-top: 0;">👥 Verein: 2. Reiter (Vorstandschaft verwalten)</h3>
+        
+        <form action="{{ url_for('save_content', seite='verein_vorstand') }}" method="POST" style="margin-bottom: 35px; padding-bottom: 20px; border-bottom: 1px dashed #E6D7C3;">
+            <label style="display:block; margin-bottom: 5px; font-weight: bold;">Hauptüberschrift (H1) der Vorstandschaft:</label>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" name="titel" value="{{ verein_vorstand.titel if verein_vorstand and verein_vorstand.titel else 'Die Vorstandschaft' }}" style="flex: 1; padding: 8px; border: 1px solid #CCC; border-radius: 4px;">
+                <button type="submit" style="background: #2C1E12; color: #FFB300; border: none; padding: 0 15px; font-weight: bold; cursor: pointer; border-radius: 4px;">Titel speichern</button>
+            </div>
+        </form>
+       
+        <div style="background: #f9f6f0; border-left: 4px solid #FFB300; padding: 20px; margin-bottom: 35px;">
+            <h3 style="margin-top: 0; color: #2C1E12;">Neues Mitglied hinzufügen</h3>
+            
+            <form action="{{ url_for('add_vorstand') }}" method="POST" enctype="multipart/form-data" onsubmit="prepareVorstandData(event, this)">
+                <input type="hidden" name="caption" id="final_caption">
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #333;">Rolle / Amt:</label>
+                    <input type="text" id="input_rolle" placeholder="z.B. 1. Vorsitzender, Kassenwart" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc;" required>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #333;">Vollständiger Name:</label>
+                    <input type="text" id="input_name" placeholder="z.B. Max Mustermann" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc;" required>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #333;">Zusatzinfo / Beschreibung (optional):</label>
+                    <textarea id="input_info" placeholder="z.B. Imkert seit 2015, zuständig für das Vereinsheim." rows="2" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; font-family: sans-serif;"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #333;">Foto hochladen:</label>
+                    <input type="file" name="foto" accept="image/*" style="display: block;" required>
+                </div>
+                
+                <button type="submit" style="background: #2C1E12; color: #FFB300; border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 3px;">
+                    ➕ Mitglied speichern
+                </button>
+            </form>
+        </div>
+
+        <div>
+            <h3 style="color: #2C1E12; margin-bottom: 15px;">Aktuelle Vorstandschaft</h3>
+            
+            {% if vorstandschaft %}
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
+                    {% for mitglied in vorstandschaft %}
+                        {% set teile = mitglied.caption.split('|') %}
+                        <div style="border: 1px solid #ddd; background: #fafafa; padding: 15px; text-align: center; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div>
+                                {% if mitglied.filename %}
+                                    <img src="{{ url_for('static', filename='uploads/' ~ mitglied.filename) }}" style="width: 100%; height: 130px; object-fit: cover; border: 1px solid #ccc; margin-bottom: 10px;">
+                                {% else %}
+                                    <div style="height: 130px; background: #eee; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 2rem;">👑</div>
+                                {% endif %}
+                                
+                                <strong style="display: block; font-size: 1rem; color: #2C1E12; margin-bottom: 2px;">
+                                    {{ teile[0].strip() if teile|length > 0 else 'Vorstand' }}
+                                </strong>
+                                <span style="display: block; font-size: 0.9rem; color: #666; font-style: italic; margin-bottom: 10px;">
+                                    {{ teile[1].strip() if teile|length > 1 else 'Kein Name' }}
+                                </span>
+                            </div>
+                            
+                            <form action="{{ url_for('delete_vorstand', id=mitglied.id) }}" method="POST" onsubmit="return confirm('Möchten Sie dieses Vorstandsmitglied wirklich löschen?');">
+                                <button type="submit" style="width: 100%; background: #d9534f; color: white; border: none; padding: 6px 10px; font-size: 0.85rem; cursor: pointer; border-radius: 3px; font-weight: bold;">
+                                    🗑️ Entfernen
+                                </button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="color: #777; font-style: italic; background: #f5f5f5; padding: 15px; border-left: 3px solid #ccc;">
+                    Es sind noch keine Vorstandsmitglieder in der Datenbank hinterlegt.
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div style="margin-bottom: 40px; background: white; padding: 20px; border-radius: 10px; border: 1px solid #E6D7C3;">
+        <h3 style="color: #B37427; margin-top: 0;">🎓 Verein: 3. Reiter (Bildungsangebot)</h3>
+        <form action="{{ url_for('save_content', seite='verein_bildung') }}" method="POST">
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">Hauptüberschrift (H1):</label>
+                <input type="text" name="titel" value="{{ verein_bildung.titel if verein_bildung and verein_bildung.titel else 'Unser Bildungsangebot' }}" style="width: 100%; padding: 8px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">Inhaltstext für Bildungsangebote:</label>
+                <textarea name="text" rows="8" style="width: 100%; font-family: monospace; padding: 8px; margin-bottom: 15px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">{{ verein_bildung.text if verein_bildung else '' }}</textarea>
+            </div>
+            
+            <button type="submit" style="background: #2C1E12; color: #FFB300; border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 4px;">Speichern</button>
+        </form>
+    </div>
+
+    <div style="margin-bottom: 40px; background: white; padding: 20px; border-radius: 10px; border: 1px solid #E6D7C3;">
+        <h3 style="color: #B37427; margin-top: 0;">☕ Bienen-Café & Öffnungszeiten steuern</h3>
+        
+        {% if caffee.titel and '.' in caffee.titel %}
+            <form id="delete_cafe_banner_form" action="{{ url_for('delete_cafe_banner') }}" method="POST"></form>
+        {% endif %}
+
+        <form action="{{ url_for('update_cafe') }}" method="POST" enctype="multipart/form-data">
+            
+            <div style="margin-bottom: 20px; background: #FAF8F5; padding: 15px; border-radius: 6px; border: 1px solid #E6D7C3;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">Großes Café-Banner hochladen:</label>
+                
+                {% if caffee.titel and '.' in caffee.titel %}
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; background: white; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                        <img src="{{ url_for('static', filename='uploads/' ~ caffee.titel) }}" style="height: 60px; max-width: 150px; object-fit: cover; border: 1px solid #ccc; border-radius: 4px;">
+                        <div>
+                            <small style="color: green; display:block; margin-bottom:5px;">Aktuelles Banner: {{ caffee.titel }}</small>
+                            <button type="submit" form="delete_cafe_banner_form" onclick="return confirm('Möchten Sie das Café-Banner wirklich löschen?')" style="background: #d9534f; color: white; border: none; padding: 5px 10px; font-size: 0.8rem; cursor: pointer; border-radius: 3px; font-weight: bold;">
+                                🗑️ Banner entfernen
+                            </button>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <input type="file" name="cafe_banner" accept="image/*" style="display: block; width: 100%;">
+            </div>
+
+            <label style="display:block; margin-bottom: 5px; font-weight: bold;">Einleitungstext (über dem Status):</label>
+            <textarea name="text" rows="4" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">{{ caffee.text if caffee else '' }}</textarea>
+
+            {% set zeiten = (caffee_unten.titel or "nein|14:00|18:00").split('|') %}
+            <div style="background: #FAF8F5; padding: 15px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #E6D7C3;">
+                <strong style="display:block; margin-bottom:10px;">🔴/🟢 Café-Öffnungsstatus für HEUTE:</strong>
+                <label style="margin-right: 20px; font-weight: bold; cursor:pointer;">
+                    <input type="radio" name="cafe_offen" value="ja" {% if zeiten[0] == 'ja' %}checked{% endif %}> 🟢 HEUTE GEÖFFNET
+                </label>
+                <label style="font-weight: bold; cursor:pointer;">
+                    <input type="radio" name="cafe_offen" value="nein" {% if zeiten[0] == 'nein' %}checked{% endif %}> 🔴 GESCHLOSSEN
+                </label>
+
+                <div style="margin-top: 12px; display: flex; gap: 15px; align-items: center;">
+                    <span>Geöffnet von:</span>
+                    <input type="time" name="cafe_von" value="{{ zeiten[1] if zeiten|length > 1 else '14:00' }}" style="padding: 5px; border-radius:4px; border:1px solid #CCC;">
+                    <span>bis:</span>
+                    <input type="time" name="cafe_bis" value="{{ zeiten[2] if zeiten|length > 2 else '18:00' }}" style="padding: 5px; border-radius:4px; border:1px solid #CCC;">
+                    <span>Uhr</span>
+                </div>
+            </div>
+
+            <label style="display:block; margin-bottom: 5px; font-weight: bold;">Zusatz-Informationen (ganz unten auf der Café-Seite):</label>
+            <textarea name="text_unten" rows="4" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">{{ caffee_unten.text if caffee_unten else '' }}</textarea>
+
+            <button type="submit" style="background: #2C1E12; color: #FFB300; border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 4px;">Café-Änderungen speichern</button>
+        </form>
+    </div>
+
+    <div style="margin-bottom: 40px; background: #FFFDF9; padding: 20px; border-radius: 10px; border: 1px solid #F0E6D2;">
+        <h3 style="color: #B37427; margin-top: 0;">📁 Fotoalben & Galerie verwalten</h3>
+        
+        <form action="{{ url_for('create_album') }}" method="POST" style="background: #FFFDF4; padding: 15px; border-radius: 6px; border: 1px dashed #FFB300; margin-bottom: 25px;">
+            <strong style="display:block; margin-bottom:8px;">➕ Ein neues leeres Album erstellen:</strong>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <input type="text" name="album_name" placeholder="z.B. Sommerfest 2026" required style="flex: 1; padding: 8px; border: 1px solid #CCC; border-radius: 4px;">
+                <input type="text" name="album_beschreibung" placeholder="Kurze Beschreibung (optional)" style="flex: 2; padding: 8px; border: 1px solid #CCC; border-radius: 4px;">
+                <button type="submit" style="background: #2C1E12; color: #FFB300; border: none; padding: 8px 15px; font-weight: bold; cursor: pointer; border-radius: 4px;">Album anlegen</button>
+            </div>
+        </form>
+
+        <h4 style="color: #2C1E12; margin-bottom: 15px;">Deine aktuellen Alben:</h4>
+        
+        {% for block in bloecke %}
+        <div style="background: white; padding: 15px; border: 1px solid #DDD; border-radius: 8px; margin-bottom: 25px;">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #EEE; padding-bottom: 8px; margin-bottom: 15px;">
+                <div>
+                    <strong style="font-size: 1.2rem; color: #2C1E12;">📖 Album: {{ block.name }}</strong>
+                    {% if block.beschreibung %}<span style="font-size: 0.9rem; color: #666; display: block;">{{ block.beschreibung }}</span>{% endif %}
+                </div>
+                <form action="{{ url_for('delete_album', id=block.id) }}" method="POST" onsubmit="return confirm('Möchtest du das Album mitsamt aller Bilder löschen?');">
+                    <button type="submit" style="background: #CC0000; color: white; border: none; padding: 5px 10px; font-size: 0.8rem; cursor: pointer; border-radius: 4px;">Album löschen</button>
+                </form>
+            </div>
+
+            <form action="{{ url_for('upload_to_album') }}" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="block_id" value="{{ block.id }}">
+                
+                <div id="dynamic-rows-{{ block.id }}">
+                    <div class="image-upload-row" style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
+                        <input type="file" name="foto" required style="font-size: 0.9rem;">
+                        <input type="text" name="caption" placeholder="Bildbeschreibung" required style="padding: 6px; border: 1px solid #CCC; border-radius: 4px; flex: 1;">
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px; display: flex; gap: 10px; margin-bottom: 15px;">
+                    <button type="button" class="add-row-trigger" data-blockid="{{ block.id }}" style="background: #FFFDF4; color: #B37427; border: 1px dashed #B37427; padding: 6px 12px; font-size: 0.85rem; cursor: pointer; border-radius: 4px;">
+                        ➕ Weiteres Bild hinzufügen
+                    </button>
+                    <button type="submit" style="background: #2C1E12; color: #FFB300; border: none; padding: 6px 15px; font-weight: bold; font-size: 0.85rem; cursor: pointer; border-radius: 4px;">
+                        Bilder im Album speichern
+                    </button>
+                </div>
+            </form>
+
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; background: #FAF9F6; padding: 10px; border-radius: 6px;">
+                {% for img in block.bilder %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ img.filename) }}" style="height: 60px; width: 60px; object-fit: cover; border-radius: 4px; border: 1px solid #CCC;" title="{{ img.caption }}">
+                {% else %}
+                    <span style="color: #999; font-style: italic; font-size: 0.85rem;">Dieses Album ist noch leer.</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+            <p style="color: #666; font-style: italic;">Noch keine Alben vorhanden.</p>
+        {% endfor %}
+    </div>
+
+    <div style="margin-bottom: 40px; background: white; padding: 20px; border-radius: 10px; border: 1px solid #E6D7C3;">
+        <h3 style="color: #B37427; margin-top: 0;">🐝 Infoseite "Die Biene"</h3>
+        <form action="{{ url_for('save_content', seite='biene') }}" method="POST" style="margin-bottom: 20px;">
+            <label style="display:block; margin-bottom: 5px; font-weight: bold;">Beschreibungstext:</label>
+            <textarea name="text" rows="4" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #CCC; border-radius: 4px;">{{ biene.text }}</textarea>
+            <button type="submit" style="background: #2C1E12; color: #FFB300; border: none; padding: 8px 15px; font-weight: bold; cursor: pointer; border-radius: 4px;">Text speichern</button>
+        </form>
+
+        <h4 style="color: #2C1E12;">Bilder für die Bienen-Seite:</h4>
+        <form action="{{ url_for('upload_biene_image') }}" method="POST" enctype="multipart/form-data" style="margin-bottom: 15px;">
+            <input type="file" name="biene_foto" required>
+             <button type="submit" style="background: #2C1E12; color: #FFB300; border: none; padding: 8px 15px; font-weight: bold; cursor: pointer; border-radius: 4px;">Bild hochladen</button>
+        </form>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            {% for b_img in biene_images %}
+            <div style="border: 1px solid #DDD; padding: 5px; border-radius: 4px; text-align: center;">
+                <img src="{{ url_for('static', filename='uploads/' ~ b_img.filename) }}" style="height: 60px; display: block; margin-bottom: 5px;">
+                <form action="{{ url_for('delete_biene_image', id=b_img.id) }}" method="POST">
+                    <button type="submit" style="background: red; color: white; border: none; font-size: 0.75rem; padding: 2px 5px; cursor: pointer;">Löschen</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div style="background: #fff; border: 1px solid #2C1E12; padding: 20px; margin-bottom: 20px; border-radius: 10px;">
+        <h3 style="color: #B37427; margin-top: 0;">📅 Kalender-Link bearbeiten</h3>
+        <form action="{{ url_for('save_content', seite='termine') }}" method="POST">
+            <input type="hidden" name="titel" value="Termine">
+            <small style="color: #666; display: block; margin-bottom: 15px;">Diese ID wird genutzt, um den interaktiven Kalender auf der Café-Seite darzustellen.</small>
+            <label style="font-weight: bold;">Outlook/Kalender Embed-Link:</label>
+            <textarea name="text" style="width: 100%; height: 80px; margin: 10px 0; border: 1px solid #CCC; border-radius: 4px; padding: 8px;">{{ termine.text }}</textarea>
+            
+             <button type="submit" style="background: #2C1E12; color: #FFB300; border: none; padding: 8px 15px; font-weight: bold; cursor: pointer; border-radius: 4px;">Kalenderlink speichern</button>
+        </form>
+    </div>
+
+  <!-- ========================================================================= -->
+    <!-- 10. RECHTLICHES: IMPRESSUM & DATENSCHUTZ (Aufklappbar)                  -->
+    <!-- ========================================================================= -->
+
+<div style="margin-bottom: 40px; background: white; padding: 20px; border-radius: 10px; border: 1px solid #E6D7C3;">
+    <h3 style="color: #B37427; margin-top: 0;">⚖️ Infoseite "Impressum"</h3>
+    <form action="{{ url_for('save_content', seite='impressum') }}" method="POST" style="margin-bottom: 20px;">
+        <label style="display:block; margin-bottom: 5px; font-weight: bold;">Inhalt Impressum:</label>
+        
+        {# Sicherer Check: Wenn impressum existiert, zeige den Text, sonst bleibt das Feld leer #}
+        <textarea name="text" rows="8" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #CCC; border-radius: 4px;">{{ impressum.text if impressum else '' }}</textarea>
+        
+        <button type="submit" style="background: #2C1E12; color: #FFB300; border: none; padding: 8px 15px; font-weight: bold; cursor: pointer; border-radius: 4px;">Impressum speichern</button>
+    </form>
+</div>
+
+<!-- 🛡️ ABSCHNITT: DATENSCHUTZ BEARBEITEN -->
+<div style="margin-bottom: 40px; background: white; padding: 20px; border-radius: 10px; border: 1px solid #E6D7C3;">
+    <h3 style="color: #B37427; margin-top: 0;">🛡️ Infoseite "Datenschutz"</h3>
+    <form action="{{ url_for('save_content', seite='datenschutz') }}" method="POST" style="margin-bottom: 20px;">
+        <label style="display:block; margin-bottom: 5px; font-weight: bold;">Inhalt Datenschutzerklärung:</label>
+        
+        {# Sicherer Check: Wenn datenschutz existiert, zeige den Text, sonst bleibt das Feld leer #}
+        <textarea name="text" rows="8" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #CCC; border-radius: 4px;">{{ datenschutz.text if datenschutz else '' }}</textarea>
+        
+        <button type="submit" style="background: #2C1E12; color: #FFB300; border: none; padding: 8px 15px; font-weight: bold; cursor: pointer; border-radius: 4px;">Datenschutz speichern</button>
+    </form>
+</div>
+    
+</div> 
+
+<!-- ========================================================================= -->
+<!-- JAVASCRIPT-BEREICH                                                        -->
+<!-- ========================================================================= -->
+<script>
+// Funktions-Sammlung
+
+// 1. NEU: Funktion zum Togglen (Auf-/Zuklappen) der Rechtstexte
+function toggleRechtliches(areaId) {
+    const area = document.getElementById(areaId);
+    const icon = document.getElementById(areaId + '-icon');
+    
+    if (area.style.display === "none") {
+        area.style.display = "block";
+        icon.textContent = "▲"; // Pfeil nach oben, wenn offen
+    } else {
+        area.style.display = "none";
+        icon.textContent = "▼"; // Pfeil nach unten, wenn zu
+    }
+}
+
+// 2. Bestehend: Script für Galerie-Bilder-Reihen
+document.querySelectorAll('.add-row-trigger').forEach(button => {
+    button.addEventListener('click', function() {
+        const blockId = this.getAttribute('data-blockid');
+        const wrapper = document.getElementById('dynamic-rows-' + blockId);
+        const newRow = document.createElement('div');
+        newRow.className = 'image-upload-row';
+        newRow.style = 'display: flex; gap: 10px; margin-bottom: 10px; align-items: center;';
+        newRow.innerHTML = `
+            <input type="file" name="foto" required style="font-size: 0.9rem;">
+            <input type="text" name="caption" placeholder="Bildbeschreibung" required style="padding: 6px; border: 1px solid #CCC; border-radius: 4px; flex: 1;">
+            <button type="button" class="remove-row-btn" style="background:none; border:none; color:#CC0000; font-weight:bold; cursor:pointer; padding: 0 5px;">❌</button>
+        `;
+        wrapper.appendChild(newRow);
+        newRow.querySelector('.remove-row-btn').addEventListener('click', () => newRow.remove());
+    });
+});
+
+// 3. Bestehend: Script für Vorstandschaft-Daten
+function prepareVorstandData(event, form) {
+    event.preventDefault();
+    const rolle = document.getElementById('input_rolle').value;
+    const name = document.getElementById('input_name').value;
+    const info = document.getElementById('input_info').value;
+    document.getElementById('final_caption').value = rolle + ' | ' + name + ' | ' + info;
+    form.submit();
+}
+
+
+
+    // 1. Beim Absenden IRGENDEINES Formulars die aktuelle Scroll-Position merken
+    document.addEventListener("submit", function() {
+        sessionStorage.setItem("admin_scroll_pos", window.scrollY);
+    });
+
+    // 2. Sobald die Seite neu geladen ist, die Position wiederherstellen
+    window.addEventListener("DOMContentLoaded", function() {
+        const scrollPos = sessionStorage.getItem("admin_scroll_pos");
+        if (scrollPos) {
+            // Kleiner Timeout, damit der Browser Zeit hat, das Layout fertig zu rendern
+            setTimeout(function() {
+                window.scrollTo(0, parseInt(scrollPos));
+                sessionStorage.removeItem("admin_scroll_pos"); // Speicher sauber leeren
+            }, 50);
+        }
+    });
+
+</script>
+{% endblock %}

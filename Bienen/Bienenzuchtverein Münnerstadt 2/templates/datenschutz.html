@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bienen-page-container">
+    
+    <div class="bienen-hero">
+        <span class="hero-badge">Rechtliches</span>
+        <h1>{{ datenschutz.titel if datenschutz and datenschutz.titel else 'Datenschutzerklärung' }}</h1>
+        <div class="hero-line"></div>
+    </div>
+
+    <div class="bienen-story" style="text-align: left;">
+        {% if datenschutz and datenschutz.text %}
+            {{ datenschutz.text | safe }}
+        {% else %}
+            <p style="text-align: center; color: red;">Keine Datenschutzerklärung in der Datenbank hinterlegt.</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

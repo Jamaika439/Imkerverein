@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bienen-page-container">
+    
+    <div class="bienen-hero">
+        <span class="hero-badge">Rechtliches</span>
+        <h1>{{ impressum.titel if impressum and impressum.titel else 'Impressum' }}</h1>
+        <div class="hero-line"></div>
+    </div>
+
+    <div class="bienen-story">
+        {% if impressum and impressum.text %}
+            {{ impressum.text | safe }}
+        {% else %}
+            <p style="text-align: center; color: red;">Kein Impressum-Text in der Datenbank hinterlegt.</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

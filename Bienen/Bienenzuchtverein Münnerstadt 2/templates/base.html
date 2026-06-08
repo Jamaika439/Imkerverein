@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Bienenzuchtverein Münnerstadt e.V.</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    {% if session.admin %}
+    <div class="admin-bar">
+        <span>🔒 Eingeloggt als Admin</span>
+        <div>
+            <a href="/admin">Dashboard</a>
+            <a href="/logout">Abmelden</a>
+            <a href="{{ url_for('admin_postfach') }}">📥 Postfach</a>
+        </div>
+    </div>
+    <div style="height: 40px;"></div>
+    {% endif %}
+
+    <header class="page-header">
+        <h1>Bienenzuchtverein Münnerstadt e.V.</h1>
+    </header>
+
+    <div class="main-layout" style="display: flex; align-items: flex-start; position: relative;">
+        
+        <!-- Linke Sidebar: NUR WABEN -->
+        <nav class="waben-netz">
+            <div class="reihe reihe-kurz">
+                <a href="{{ url_for('die_biene') }}" class="wabe wabe-biene" style="position: relative;">
+                    <img src="{{ url_for('static', filename='images/koenigig.png') }}" class="koenigin-img" alt="Königin">
+                    <div class="wabe-front"><div class="honig-kern"><span class="wabe-text">Die Biene</span></div></div>
+                </a>
+                <a href="/galerie" class="wabe">
+                    <div class="wabe-front"><div class="honig-kern"><span class="wabe-text">Galerie</span></div></div>
+                </a>
+            </div>
+
+            <div class="reihe">
+                <a href="/" class="wabe"><div class="wabe-front"><div class="honig-kern"><span class="wabe-text">Start</span></div></div></a>
+                <a href="/login" class="wabe"><div class="wabe-front"><div class="honig-kern"><span class="wabe-text">Login</span></div></div></a>
+                <a href="/caffee" class="wabe"><div class="wabe-front"><div class="honig-kern"><span class="wabe-text">Bienen- Café</span></div></div></a>
+            </div>
+
+            <div class="reihe reihe-kurz">
+                <a href="/verein" class="wabe"><div class="wabe-front"><div class="honig-kern"><span class="wabe-text">Verein</span></div></div></a>
+                <a href="/termine" class="wabe"><div class="wabe-front"><div class="honig-kern"><span class="wabe-text">Termine</span></div></div></a>
+            </div>
+        </nav>
+
+        <!-- CAFFEE-BOX: Frei positioniert unter den Waben -->
+        <div style="position: absolute; margin-top: 480px; width: 230px; z-index: 10;">
+            <div class="oeffnungszeiten-sidebar" style="background: #FAF8F5; border-left: 5px solid #B37427; padding: 15px; border-radius: 0 10px 10px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                <h3 style="color: #2C1E12; font-size: 1rem; margin-top: 0; margin-bottom: 10px;">🐝 Imker-Caffee</h3>
+                
+                {% if home_caffee_status and home_caffee_status.split('|')[0] == 'ja' %}
+                    <div style="color: #28a745; margin-bottom: 8px;"><strong>● Jetzt geöffnet!</strong></div>
+                    <p style="margin: 0; font-size: 0.85rem; color: #2C1E12;">{{ home_caffee_status.split('|')[1] }} - {{ home_caffee_status.split('|')[2] }} Uhr</p>
+                {% else %}
+                    <div style="color: #dc3545; margin-bottom: 8px;"><strong>● Aktuell geschlossen</strong></div>
+                {% endif %}
+                
+                 <div style="background: rgba(44, 30, 18, 0.05); padding: 8px; border-radius: 4px; margin-top: 10px; font-size: 0.8rem;">
+                    <strong style="display:block; margin-bottom:2px;">Morgen:</strong>
+                    Checke den Kalender für die Zeiten.
+                </div>
+                
+                <a href="{{ url_for('caffee') }}" style="color: #B37427; font-weight: bold; text-decoration: none; font-size: 0.8rem; display: block; margin-top: 10px;">📅 Zum Kalender →</a>
+            </div>
+        </div>
+
+        <!-- Hauptinhalt -->
+        <main style="flex: 1; margin-left: 60px; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <footer style="text-align: center; margin-top: 80px; padding: 20px; font-size: 0.9rem; border-top: 1px solid rgba(44, 30, 18, 0.1);">
+        <p>© 2026 Imkerverein Münnerstadt e.V. Alle Rechte vorbehalten.</p>
+        <p>
+            <a href="{{ url_for('impressum') }}" style="color: #2C1E12; text-decoration: none; font-weight: bold; margin: 0 10px;">Impressum</a> | 
+            <a href="{{ url_for('datenschutz') }}" style="color: #2C1E12; text-decoration: none; font-weight: bold; margin: 0 10px;">Datenschutz</a> |
+            <a href="{{ url_for('kontakt') }}" style="color: #2C1E12; text-decoration: none; font-weight: bold; margin: 0 10px;">Kontakt</a>
+        </p>
+    </footer>
+</body>
+</html>

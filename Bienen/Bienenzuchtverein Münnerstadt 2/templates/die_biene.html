@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="biene-content">
+    
+    <h2>Die Biene</h2>
+    
+    <!-- 📝 Dynamischer Textbereich aus dem Dashboard -->
+    <div class="text-bereich" style="line-height: 1.6; color: #2C1E12; font-size: 1.05rem; margin-bottom: 40px;">
+        {% if biene and biene.text %}
+            {{ biene.text | safe }}
+        {% else %}
+            <p style="color: #666; font-style: italic;">Hier wurde im Admin-Bereich noch kein Beschreibungstext hinterlegt.</p>
+        {% endif %}
+    </div>
+
+    <!-- 📸 Dynamische Bildergalerie -->
+    {% if biene_images %}
+    <hr style="border: 0; border-top: 1px solid #E6D7C3; margin: 40px 0;">
+    <h3 style="color: #B37427; margin-bottom: 20px;">Bildergalerie</h3>
+    
+    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+        {% for b_img in biene_images %}
+        <div style="border: 1px solid #E6D7C3; padding: 8px; border-radius: 8px; background: #FFF; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+            <img src="{{ url_for('static', filename='uploads/' ~ b_img.filename) }}" alt="Bienen Bild" style="max-height: 200px; border-radius: 4px; display: block;">
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</article>
+{% endblock %}
